@@ -77,12 +77,31 @@ router.get('/', async ctx => {
     }
 })
 
+const retrieveState = (client, capability, instance, timeout = 2000) => new Promise(async (resovle, reject) => {
+    setTimeout(() => reject('Timed out.'), timeout)
+    ctx.ws.sendOp(client, 'get', {
+        capability,
+        instance
+    }).then(resovle).catch(reject)
+})
+
 router.post('/query', koaBody(), async ctx => {
+    const devices = await getUserDevices(ctx, ctx.request.body?.devices.map(({ id }) => id), true, true)
+    for (const device of devices) {
+        const client = ctx.ws.clients[device.uid]
+        if (!client) {
+            continue
+        }
+        for (const capability of device.capabilities) {
+            try {
+                capability.state.value = await retrieveState(client, capability.type, capability.state.instance)
+            } catch (err) {
+            }
+        }
+    }
     ctx.body = {
         request_id: ctx.requestId,
-        payload: {
-            devices: await getUserDevices(ctx, ctx.request.body?.devices.map(({ id }) => id), true, true)
-        }
+        payload: { devices }
     }
 })
 
