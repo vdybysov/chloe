@@ -1,0 +1,37 @@
+{
+  "404": {
+    "title": "Oops, 404",
+    "back": "Back to home",
+    "page_title": "Page not found"
+  },
+  "page_title": "Хлоя",
+  "devices": {
+    "title": "Devices ({0})",
+    "add": "Add device",
+    "new": {
+      "name": "New device",
+      "title": "New device"
+    },
+    "edit": {
+      "type": "Type",
+      "name": "Name",
+      "capabilities": {
+        "title": "Capabilities",
+        "add": "Add capability"
+      },
+      "save": "Save",
+      "delete": "Delete"
+    }
+  },
+  "top_bar": {
+    "menu": {
+      "devices": "Devices",
+      "log_out": "Log out"
+    }
+  },
+  "index": {
+    "log_in": "Log in with Yandex ID",
+    "subtitle": "For smart home",
+    "title": "Chloe"
+  }
+}

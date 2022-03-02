@@ -1,0 +1,6 @@
+{
+    "typescript.validate.enable": false,
+    "i18n-ally.localesPaths": [
+        "client/src/i18n"
+    ]
+}
