@@ -88,7 +88,7 @@ const retrieveState = (client, capability, instance, timeout = 2000) => new Prom
 router.post('/query', koaBody(), async ctx => {
     const devices = await getUserDevices(ctx, ctx.request.body?.devices.map(({ id }) => id), true, true)
     for (const device of devices) {
-        const client = ctx.ws.clients[device.uid]
+        const client = ctx.ws.clients[device.id]
         if (!client) {
             continue
         }
