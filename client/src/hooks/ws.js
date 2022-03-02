@@ -13,6 +13,7 @@ export const setWs = () => {
     const replies = {};
 
     let socket;
+    let connected = false;
 
     const connect = () => {
         console.log('[WS] Connecting to', url)
@@ -26,11 +27,15 @@ export const setWs = () => {
                 }
             }
         };
-        socket.onopen = () => console.log('[WS] Successfully connected to', url)
+        socket.onopen = () => {
+            console.log('[WS] Successfully connected to', url)
+            connected = true
+        }
         socket.onerror = (error) => {
             console.error('[WS] Error:', error)
         }
         socket.onclose = () => {
+            connected = false
             console.log('[WS] Disconnected.')
             setTimeout(() => connect(), 1000)
         }
@@ -38,7 +43,23 @@ export const setWs = () => {
 
     const sendMessage = (message) => socket.send(JSON.stringify(message));
 
+    const waitForConnection = (maxAttempts = 10, attempt = 0) => new Promise((resolve, reject) => {
+        if (connected) {
+            resolve()
+            return
+        }
+        if (attempt >= maxAttempts) {
+            reject(new Error('[WS] Could not connect.'))
+        }
+        setTimeout(() => waitForConnection(maxAttempts, attempt + 1)
+            .then(resolve)
+            .catch(reject),
+            200
+        )
+    })
+
     const sendOp = (op, params = {}) => new Promise(async (resolve, reject) => {
+        await waitForConnection()
         const timeout = setTimeout(() => {
             reject(new Error('Timed out.'));
         }, REPLY_TIMEOUT_MS);
