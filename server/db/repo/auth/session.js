@@ -17,7 +17,9 @@ const useAuthSessionRepo = (db) => {
         },
         getAndRemove: async (uid) => {
             const session = await collection.findOne({ uid })
-            await collection.deleteOne({ _id: session._id })
+            if(session) {
+                await collection.deleteOne({ _id: session._id })
+            }
             return session
         }
     }
