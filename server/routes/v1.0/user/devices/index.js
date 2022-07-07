@@ -82,7 +82,20 @@ const retrieveState = (ctx, client, capability, instance, timeout = 2000) => new
     ctx.ws.sendOp(client, 'get', {
         capability,
         instance
-    }).then(resovle).catch(reject)
+    })
+        .then(value => {
+            switch (capability) {
+                case 'toggle':
+                case 'on_off':
+                    return value?.toString() === 'true'
+                case 'range':
+                    return +value || 0
+                default:
+                    return value
+            }
+        })
+        .then(resovle)
+        .catch(reject)
 })
 
 router.post('/query', koaBody(), async ctx => {
