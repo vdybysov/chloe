@@ -90,6 +90,11 @@ const retrieveState = (ctx, client, capability, instance, timeout = 2000) => new
                     return value?.toString() === 'true' || value?.toString() === '1'
                 case 'range':
                     return +value || 0
+                case 'color_setting':
+                    switch (instance) {
+                        case 'rgb':
+                            return +value || 0
+                    }
                 default:
                     return value
             }
