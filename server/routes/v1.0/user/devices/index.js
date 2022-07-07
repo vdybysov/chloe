@@ -87,7 +87,7 @@ const retrieveState = (ctx, client, capability, instance, timeout = 2000) => new
             switch (capability) {
                 case 'toggle':
                 case 'on_off':
-                    return value?.toString() === 'true'
+                    return value?.toString() === 'true' || value?.toString() === '1'
                 case 'range':
                     return +value || 0
                 default:
