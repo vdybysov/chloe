@@ -94,7 +94,7 @@ router.post('/query', koaBody(), async ctx => {
         }
         for (const capability of device.capabilities) {
             try {
-                capability.state.value = await retrieveState(ctx, client, capability.type, capability.state.instance)
+                capability.state.value = await retrieveState(ctx, client, capability.type.replace('devices.capabilities.', ''), capability.state.instance)
             } catch (err) {
             }
         }
